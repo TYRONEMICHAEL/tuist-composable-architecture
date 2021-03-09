@@ -1,0 +1,47 @@
+import SwiftUI
+import ComposableArchitecture
+import Todo
+
+@main
+struct TodosApp: App {
+    var body: some Scene {
+        WindowGroup {
+            TodosView(store: Store(
+                initialState: TodosState(todos: .mock),
+                reducer: todosReducer,
+                environment: TodosEnvironment(
+                    mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
+                    uuid: UUID.init
+                )
+            ))
+        }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        TodosView(store: Store(
+            initialState: TodosState(todos: []),
+            reducer: todosReducer,
+            environment: TodosEnvironment(
+                mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
+                uuid: UUID.init
+            )
+        ))
+    }
+}
+
+public extension IdentifiedArray where ID == UUID, Element == Todo {
+  static let mock: Self = [
+    Todo(
+        id: UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEDDEADBEEF")!,
+        description: "Check Mail",
+        isComplete: false
+    ),
+    Todo(
+        id: UUID(uuidString: "CAFEBEEF-CAFE-BEEF-CAFE-BEEFCAFEBEEF")!,
+        description: "Buy Milk",
+        isComplete: false
+    ),
+  ]
+}

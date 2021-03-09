@@ -1,0 +1,60 @@
+import SwiftUI
+import ComposableArchitecture
+import Todo
+
+struct TodosView: View {
+    struct ViewState: Equatable {
+      var editMode: EditMode
+      var isClearCompletedButtonDisabled: Bool
+    }
+
+    let store: Store<TodosState, TodosAction>
+
+    var body: some View {
+        WithViewStore(self.store.scope(state: { $0.view })) { viewStore in
+            NavigationView {
+                VStack(alignment: .leading) {
+                    WithViewStore(self.store.scope(state: { $0.filter }, action: TodosAction.filterPicked)) {
+                        filterViewStore in
+                        Picker(
+                            "Filter", selection: filterViewStore.binding(send: { $0 })
+                        ) {
+                            ForEach(Filter.allCases, id: \.self) { filter in
+                                Text(filter.rawValue).tag(filter)
+                            }
+                        }
+                        .pickerStyle(SegmentedPickerStyle())
+                }
+                .padding([.leading, .trailing])
+
+                List {
+                    ForEachStore(
+                        self.store.scope(state: { $0.filteredTodos }, action: TodosAction.todo(id:action:)),
+                        content: TodoView.init(store:)
+                    )
+                    .onDelete { viewStore.send(.delete($0)) }
+                    .onMove { viewStore.send(.move($0, $1)) }
+                }
+            }.navigationBarTitle("Todos")
+                .navigationBarItems(
+                    trailing: HStack(spacing: 20) {
+                        EditButton()
+                        Button("Clear Completed") { viewStore.send(.clearCompletedButtonTapped) }
+                            .disabled(viewStore.isClearCompletedButtonDisabled)
+                        Button("Add Todo") { viewStore.send(.addTodoButtonTapped) }
+                    }
+                )
+                .environment(\.editMode, viewStore.binding(get: { $0.editMode }, send: TodosAction.editModeChanged))
+            }.navigationViewStyle(StackNavigationViewStyle())
+        }
+    }
+}
+
+extension TodosState {
+  var view: TodosView.ViewState {
+    .init(
+        editMode: self.editMode,
+        isClearCompletedButtonDisabled: !self.todos.contains(where: { $0.isComplete })
+    )
+  }
+}

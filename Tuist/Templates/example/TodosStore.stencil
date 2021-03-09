@@ -1,0 +1,93 @@
+import Foundation
+import ComposableArchitecture
+import Todo
+import SwiftUI
+
+enum Filter: String, CaseIterable, Hashable {
+  case all = "All"
+  case active = "Active"
+  case completed = "Completed"
+}
+
+struct TodosState: Equatable {
+  var editMode: EditMode = .inactive
+  var filter: Filter = .all
+  var todos: IdentifiedArrayOf<Todo> = []
+
+  var filteredTodos: IdentifiedArrayOf<Todo> {
+    switch filter {
+    case .active: return self.todos.filter { !$0.isComplete }
+    case .all: return self.todos
+    case .completed: return self.todos.filter { $0.isComplete }
+    }
+  }
+}
+
+enum TodosAction: Equatable {
+  case addTodoButtonTapped
+  case clearCompletedButtonTapped
+  case delete(IndexSet)
+  case editModeChanged(EditMode)
+  case filterPicked(Filter)
+  case move(IndexSet, Int)
+  case sortCompletedTodos
+  case todo(id: UUID, action: TodoAction)
+}
+
+struct TodosEnvironment {
+  var mainQueue: AnySchedulerOf<DispatchQueue>
+  var uuid: () -> UUID
+}
+
+let todosReducer = Reducer<TodosState, TodosAction, TodosEnvironment>.combine(
+    todoReducer.forEach(
+        state: \.todos,
+        action: /TodosAction.todo(id:action:),
+        environment: { _ in TodoEnvironment() }
+    ),
+    Reducer { state, action, environment in
+        switch action {
+        case .addTodoButtonTapped:
+            state.todos.append(Todo(id: environment.uuid()))
+            return .none
+        case .clearCompletedButtonTapped:
+            state.todos.removeAll(where: { $0.isComplete })
+            return .none
+        case .delete(let indexSet):
+            state.todos.remove(atOffsets: indexSet)
+            return .none
+        case let .editModeChanged(editMode):
+            state.editMode = editMode
+            return .none
+        case let .filterPicked(filter):
+            state.filter = filter
+            return .none
+        case let .move(source, destination):
+            state.todos.move(fromOffsets: source, toOffset: destination)
+            return Effect(value: .sortCompletedTodos)
+                .delay(for: .milliseconds(100), scheduler: environment.mainQueue)
+                .eraseToEffect()
+        case .sortCompletedTodos:
+            state.todos.sortCompleted()
+            return .none
+        case .todo(id: _, action: .checkBoxToggled):
+            struct TodoCompletionId: Hashable {}
+            return Effect(value: .sortCompletedTodos)
+                .debounce(id: TodoCompletionId(), for: 1, scheduler: environment.mainQueue)
+        default:
+            return .none
+        }
+    }
+
+)
+
+extension IdentifiedArray where ID == UUID, Element == Todo {
+  fileprivate mutating func sortCompleted() {
+    self = IdentifiedArray(
+        self.enumerated()
+            .sorted(by: { lhs, rhs in
+                (rhs.element.isComplete && !lhs.element.isComplete) || lhs.offset < rhs.offset
+            }).map { $0.element }
+    )
+  }
+}

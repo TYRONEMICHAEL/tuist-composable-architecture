@@ -1,0 +1,25 @@
+import ProjectDescription
+
+extension Project {
+
+    public struct App {
+        let name: String
+        let organisationName: String
+        let platform: Platform
+        let packages: [Package]
+        let infoPlist: [String: InfoPlist.Value]
+
+        public init(name: String,
+                    organisationName: String,
+                    platform: Platform = .iOS,
+                    infoPlist: [String: InfoPlist.Value] = [:],
+                    packages: [Package] = []) {
+            self.name = name
+            self.organisationName = organisationName
+            self.packages = packages
+            self.infoPlist = infoPlist
+            self.platform = platform
+        }
+    }
+
+}

@@ -1,0 +1,30 @@
+import Foundation
+import SwiftUI
+import ComposableArchitecture
+
+public struct TodoView: View {
+    public let store: Store<Todo, TodoAction>
+
+    public init(store: Store<Todo, TodoAction>) {
+        self.store = store
+    }
+
+    public var body: some View {
+        WithViewStore(store) { viewStore in
+            HStack {
+                Button(action: { viewStore.send(.checkBoxToggled) }, label: {
+                    Image(systemName: viewStore.isComplete ? "checkmark.square" : "square")
+                }).buttonStyle(PlainButtonStyle())
+
+                TextField("Untitled", text: viewStore.binding(get: { $0.description }, send: TodoAction.textFieldChanged))
+            }
+        }
+    }
+
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        TodoView(store: Store(initialState: Todo(id: UUID()), reducer: todoReducer, environment: TodoEnvironment()))
+    }
+}

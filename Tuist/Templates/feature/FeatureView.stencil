@@ -1,0 +1,30 @@
+import CasePaths
+import Combine
+import ComposableArchitecture
+import SwiftUI
+
+public struct {{ name }}View: View {
+    let store: Store<{{ name }}State, {{ name }}Action>
+    
+    public init(store: Store<{{ name }}State, {{ name }}Action>) {
+        self.store = store
+    }
+    
+    public var body: some View {
+        WithViewStore(store) { viewStore in
+            Text("{{ name }} feature")
+        }
+    }
+}
+
+struct {{ name }}_Previews: PreviewProvider {
+    static var previews: some View {
+        {{ name }}View(
+            store: Store(
+                initialState: {{ name }}State(),
+                reducer: {{ name|lowercase }}Reducer,
+                environment: {{ name }}Environment()
+            )
+        )
+    }
+}

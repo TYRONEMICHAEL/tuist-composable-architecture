@@ -1,0 +1,37 @@
+import Foundation
+import XCTest
+import ComposableArchitecture
+@testable import AddTodo
+
+public final class AddTodoTests: XCTestCase {
+
+    func testTodoIsNotSetToCompletedWhenInitialised() {
+        let todo = Todo(id: UUID())
+        XCTAssertFalse(todo.isComplete)
+    }
+
+    func testTodoDescriptionCanBeUpdated() {
+        let store = TestStore(initialState: Todo(id: UUID()),
+                              reducer: todoReducer,
+                              environment: TodoEnvironment())
+
+        store.assert(
+            .send(.textFieldChanged("Get milk")) { todo in
+                todo.description = "Get milk"
+            }
+        )
+    }
+
+    func testMarkComplete() {
+        let store = TestStore(initialState: Todo(id: UUID()),
+                              reducer: todoReducer,
+                              environment: TodoEnvironment())
+
+        store.assert(
+            .send(.checkBoxToggled) { todo in
+                todo.isComplete = true
+            }
+        )
+    }
+
+}

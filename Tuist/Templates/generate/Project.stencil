@@ -1,0 +1,21 @@
+import ProjectDescription
+import ProjectDescriptionHelpers
+
+let organisationName = "tuist.io"
+let platform: Platform = .iOS
+
+let app = Project.App(name: "{{name}}",
+                      organisationName: organisationName,
+                      packages: [
+                        .remote(url: "https://github.com/pointfreeco/swift-composable-architecture",
+                                requirement: .upToNextMajor(from: "0.15.0"))
+                      ])
+
+let additionalTargets: [Project.Framework] = [
+    .remote(info: .init(name: "ComposableArchitectureFramework",
+                        organisationName: organisationName,
+                        platform: platform,
+                        dependencies: ["ComposableArchitecture"])),
+]
+
+let project = Project.app(app: app, additionalTargets: additionalTargets)
