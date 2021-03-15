@@ -1,14 +1,26 @@
+import Foundation
 import SwiftUI
+import ComposableArchitecture
 
-struct ContentView: View {
-    var body: some View {
-        Text("Hello, world!")
-            .padding()
+@main
+struct {{ name }}App: App {
+    var body: some Scene {
+        WindowGroup {
+            {{ name }}View(store: Store(
+                initialState: {{ name }}State(),
+                reducer: {{ name|lowercase }}Reducer,
+                environment: {{ name }}Environment()
+            ))
+        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        {{ name }}View(store: Store(
+            initialState: {{ name }}State(),
+            reducer: {{ name|lowercase }}Reducer,
+            environment: {{ name }}Environment()
+        ))
     }
 }

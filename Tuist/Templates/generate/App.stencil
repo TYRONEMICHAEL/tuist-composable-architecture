@@ -1,10 +1,13 @@
+import Foundation
 import SwiftUI
+import ComposableArchitecture
 
-@main
-struct {{ name }}App: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
+struct {{ name }}View: View {
+    let store: Store<{{ name }}State, {{ name }}Action>
+
+    var body: some View {
+        WithViewStore(self.store) { viewStore in
+            Text("Hello, world!").padding()
         }
     }
 }

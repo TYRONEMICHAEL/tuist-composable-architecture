@@ -19,11 +19,14 @@ let template = Template(
         .file(path: appPath + "\(nameAttribute)/Sources/\(nameAttribute).swift",
               templatePath: "App.stencil"),
 
-        .file(path: appPath + "\(nameAttribute)/Sources/ContentView.swift",
-              templatePath: "ContentView.stencil"),
-
         .file(path: appPath + "\(nameAttribute)/Tests/\(nameAttribute)Tests.swift",
               templatePath: "AppTests.stencil"),
+
+        .file(path: appPath + "\(nameAttribute)/Sources/\(nameAttribute)Store.swift",
+              templatePath: "AppStore.stencil"),
+
+        .file(path: appPath + "\(nameAttribute)/Sources/ContentView.swift",
+              templatePath: "ContentView.stencil"),
 
         .file(path: appPath + "\(nameAttribute)/Resources/Assets.xcassets/AppIcon.appiconset/Contents.json",
               templatePath: "Contents.json.stencil")
