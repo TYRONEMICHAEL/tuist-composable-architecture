@@ -20,7 +20,13 @@ This little project requires that you are both familiar with [TCA](https://githu
 
 ## How to get started?
 
-To get started run the following command in your terminal:
+Install Tuist with the following command:
+
+```swift
+bash <(curl -Ls https://install.tuist.io)
+```
+
+Now to get started run the following command in your terminal:
 
 ```swift
 tuist scaffold generate --name YourProjectName
@@ -40,7 +46,7 @@ tuist generate && tuist focus YourProjectName
 
 ## Creating Microfeatures
 
-Now we can start creating Microfeatures. Micro features allow you to write features in isolation without having to create and write boilerplate code.
+Now we can start creating Microfeatures. Microfeatures allow you to write features in isolation without having to create and write boilerplate code.
 
 You can create a MicroFeature using the following command:
 
