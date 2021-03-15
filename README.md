@@ -101,7 +101,7 @@ If you are a little unsure how everything fits together, you can checkout the ex
 tuist scaffold example
 ```
 
-This will generate a fully functional Todo example project together with tests. This is the original TCA todo example that is using the Micro
+This will generate a fully functional Todo example project together with tests. This is the original TCA todo example that is using the Microfeatures architecture
 
 ## References
 
