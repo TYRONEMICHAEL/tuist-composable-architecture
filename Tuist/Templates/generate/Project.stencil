@@ -4,12 +4,19 @@ import ProjectDescriptionHelpers
 
 let organisationName = "tuist.io"
 let platform: Platform = .iOS
+let infoPlist: [String: InfoPlist.Value] = [
+    "CFBundleShortVersionString": "1.0",
+    "CFBundleVersion": "1",
+    "UIMainStoryboardFile": "",
+    "UILaunchStoryboardName": "LaunchScreen"
+]
 
 let app = Project.App(name: "{{name}}",
                       organisationName: organisationName,
+                      infoPlist: infoPlist,
                       packages: [
                         .remote(url: "https://github.com/pointfreeco/swift-composable-architecture",
-                                requirement: .upToNextMajor(from: "0.15.0"))
+                                requirement: .upToNextMajor(from: "0.16.0"))
                       ])
 
 let additionalTargets: [Project.Framework] = [

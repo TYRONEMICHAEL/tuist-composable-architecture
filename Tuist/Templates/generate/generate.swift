@@ -29,6 +29,10 @@ let template = Template(
               templatePath: "ContentView.stencil"),
 
         .file(path: appPath + "\(nameAttribute)/Resources/Assets.xcassets/AppIcon.appiconset/Contents.json",
-              templatePath: "Contents.json.stencil")
+              templatePath: "Contents.json.stencil"),
+
+        .file(path: appPath + "\(nameAttribute)/Resources/LaunchScreen.storyboard",
+              templatePath: "LaunchScreen.storyboard.stencil")
+        
     ]
 )

@@ -22,8 +22,7 @@ private extension Project {
                                 infoPlist: .extendingDefault(with: app.infoPlist),
                                 sources: ["Targets/\(app.name)/Sources/**"],
                                 resources: ["Targets/\(app.name)/Resources/**"],
-                                dependencies:
-                                    additionalTargets.map(\.targetDependency))
+                                dependencies: additionalTargets.map(\.targetDependency))
 
 
         let testTarget = Target(name: "\(app.name)Tests",
