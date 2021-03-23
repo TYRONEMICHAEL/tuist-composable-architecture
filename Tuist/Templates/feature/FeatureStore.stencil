@@ -4,10 +4,7 @@ public struct {{ name }}State: Equatable {}
 public enum {{ name }}Action: Equatable {}
 public struct {{ name }}Environment {}
 
-public let {{ name|lowercase }}Reducer = Reducer<{{ name }}State, {{ name }}Action, {{ name }}Environment> { state, action, environment in
+public let {{ name|lowercase }}Reducer = Reducer<{{ name }}State, {{ name }}Action, {{ name }}Environment> { _, action, _ in
     switch action {
-        
     }
 }
-
-

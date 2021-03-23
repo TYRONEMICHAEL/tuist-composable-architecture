@@ -37,7 +37,7 @@ let exampleTemplate = Template(
               templatePath: "TodosTests.stencil"),
 
         .file(path: examplePath + "Todos/Sources/ContentView.swift",
-              templatePath: "ContentView.stencil"),
+              templatePath: "ContentView.stencil")
 
     ]
 )

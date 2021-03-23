@@ -6,6 +6,6 @@ struct {{ name }}State: Equatable {}
 enum {{ name }}Action: Equatable {}
 struct {{ name }}Environment {}
 
-let {{ name|lowercase }}Reducer = Reducer<{{ name }}State, {{ name }}Action, {{ name }}Environment> { state, action, environment in
+let {{ name|lowercase }}Reducer = Reducer<{{ name }}State, {{ name }}Action, {{ name }}Environment> { _, _, _ in
     return .none
 }

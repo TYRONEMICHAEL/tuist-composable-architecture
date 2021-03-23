@@ -17,6 +17,11 @@ let app = Project.App(name: "{{name}}",
                       packages: [
                         .remote(url: "https://github.com/pointfreeco/swift-composable-architecture",
                                 requirement: .upToNextMajor(from: "0.16.0"))
+                      ],
+                      actions: [
+                        TargetAction.pre(path: "Scripts/RunSwiftLint.sh",
+                                         arguments: [],
+                                         name: "SwiftLint")
                       ])
 
 let additionalTargets: [Project.Framework] = [

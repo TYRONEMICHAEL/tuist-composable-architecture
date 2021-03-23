@@ -11,7 +11,7 @@ public struct {{ name }}View: View {
     }
     
     public var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store) { _ in
             Text("{{ name }} feature")
         }
     }

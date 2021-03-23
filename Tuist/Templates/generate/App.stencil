@@ -6,7 +6,7 @@ struct {{ name }}View: View {
     let store: Store<{{ name }}State, {{ name }}Action>
 
     var body: some View {
-        WithViewStore(self.store) { viewStore in
+        WithViewStore(self.store) { _ in
             Text("Hello, world!").padding()
         }
     }

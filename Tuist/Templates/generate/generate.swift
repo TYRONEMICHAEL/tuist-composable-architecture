@@ -33,6 +33,5 @@ let template = Template(
 
         .file(path: appPath + "\(nameAttribute)/Resources/LaunchScreen.storyboard",
               templatePath: "LaunchScreen.storyboard.stencil")
-        
     ]
 )

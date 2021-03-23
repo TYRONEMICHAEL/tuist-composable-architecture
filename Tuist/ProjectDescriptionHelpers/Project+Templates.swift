@@ -9,7 +9,6 @@ extension Project {
                        targets: makeTargets(app: app, additionalTargets: additionalTargets))
     }
 
-
 }
 
 private extension Project {
@@ -21,9 +20,12 @@ private extension Project {
                                 bundleId: "\(app.organisationName).\(app.name)",
                                 infoPlist: .extendingDefault(with: app.infoPlist),
                                 sources: ["Targets/\(app.name)/Sources/**"],
-                                resources: ["Targets/\(app.name)/Resources/**"],
-                                dependencies: additionalTargets.map(\.targetDependency))
-
+                                resources: [
+                                    "Targets/\(app.name)/Resources/**"
+                                ],
+                                actions: app.actions,
+                                dependencies:
+                                    additionalTargets.map(\.targetDependency))
 
         let testTarget = Target(name: "\(app.name)Tests",
                                 platform: app.platform,
